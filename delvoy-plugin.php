@@ -17,12 +17,6 @@ defined ('ABSPATH') or die();
 
 class DeLvoyPlugin{ 
 
-    //public
-
-    //protected
-
-    //private
-
     function __construct(){
         $this->create_post_type();
     }
@@ -35,18 +29,6 @@ class DeLvoyPlugin{
         add_action('init', array($this, 'custom_post_type'));
     }
 
-    function activate(){
-        //generate CPT
-        $this -> custom_post_type();
-        //flush rewrite rules
-        flush_rewrite_rules();
-    }
-
-    function deactivate(){
-         //flush rewrite rules 
-         flush_rewrite_rules(); 
-    }
-
     function custom_post_type(){
         register_post_type( 'book', [
             'public' => true,
@@ -57,7 +39,12 @@ class DeLvoyPlugin{
     function enqueue(){
         //enqueue all scripts
         wp_enqueue_style('plugin-style', plugins_url('/assets/plug-styles.css', __FILE__));
-        wp_enqueue_script('plugin-script', plugins_url('/assets/plug-scripts.js' __FILE__));
+        wp_enqueue_script('plugin-script', plugins_url('/assets/plug-scripts.js', __FILE__));
+    }
+
+    function activate(){
+        require_once plugin_dir_path(__FILE__) . 'inc/delvoy-plugin-activate.php';
+        DelvoyPluginActivate::activate();
     }
 
 }
@@ -71,5 +58,6 @@ if(class_exists('DeLvoyPlugin')){
 register_activation_hook( __FILE__, array($delvoy_plugin, 'activate') );
 
 //deactivation
-register_deactivation_hook( __FILE__, array($delvoy_plugin, 'deactivate') );
+require_once plugin_dir_path(__FILE__) . '/inc/delvoy-plugin-deactivate.php';
+register_deactivation_hook( __FILE__, array('DelvoyPluginDeactivate', 'deactivate') );
 
