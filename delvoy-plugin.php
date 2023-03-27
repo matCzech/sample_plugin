@@ -15,68 +15,29 @@
 
 defined ('ABSPATH') or die();
 
-class DeLvoyPlugin{ 
-
-    public $plugin_title;
-
-    function __construct(){
-        $this->plugin_title = plugin_basename(__FILE__);
-        $this->create_post_type();
-    }
-
-    function register(){
-        add_action('admin_enqueue_scripts', array($this, 'enqueue'));
-        add_action('admin_menu', array($this, 'add_admin_pages'));
-        add_filter("plugin_action_links_$this->plugin_title", array($this, 'settings_link'));
-    }
-
-    protected function create_post_type(){
-        add_action('init', array($this, 'custom_post_type'));
-    }
-
-    function custom_post_type(){
-        register_post_type( 'book', [
-            'public' => true,
-            'label' => 'Books'
-        ]);
-    }
-
-    function enqueue(){
-        //enqueue all scripts
-        wp_enqueue_style('plugin-style', plugins_url('/assets/plug-styles.css', __FILE__));
-        wp_enqueue_script('plugin-script', plugins_url('/assets/plug-scripts.js', __FILE__));
-    }
-
-    public function add_admin_pages(){
-        add_menu_page( 'DeLvoy plugin', 'DeLvoy', 'manage_options', 'delvoy_plugin', array($this, 'admin_index'), 'dashicons-store', 110);
-    }
-
-    public function admin_index(){
-        require_once plugin_dir_path(__FILE__) . 'templates/admin_page.php';
-    }
-
-    public function settings_link($links){
-        $settings_link = '<a href="admin.php?page=delvoy_plugin">Settings</a>';
-        array_push($links, $settings_link);
-        return $links;
-    }
-
-    function activate(){
-        require_once plugin_dir_path(__FILE__) . 'inc/delvoy-plugin-activate.php';
-        DelvoyPluginActivate::activate();
-    }
-
+if(file_exists(dirname(__FILE__) . '/vendor/autoload.php')){
+    require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-if(class_exists('DeLvoyPlugin')){
-    $delvoy_plugin = new DeLvoyPlugin();
-    $delvoy_plugin->register();
+define('PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('PLUGIN_URL', plugin_dir_url(__FILE__));
+define('PLUGIN', plugin_basename(__FILE__));
+
+use Inc\Base\Activate;
+use Inc\Base\Deactivate;
+
+function activate_delvoy_plugin(){
+    Activate::activate();
 }
 
-//activation
-register_activation_hook( __FILE__, array($delvoy_plugin, 'activate') );
+function deactivate_delvoy_plugin(){
+    Deactivate::deactivate();
+}
 
-//deactivation
-require_once plugin_dir_path(__FILE__) . '/inc/delvoy-plugin-deactivate.php';
-register_deactivation_hook( __FILE__, array('DelvoyPluginDeactivate', 'deactivate') );
+register_activation_hook(__FILE__,'activate_delvoy_plugin');
+register_deactivation_hook(__FILE__,'deactivate_delvoy_plugin');
+
+if(class_exists('Inc\\Init')){
+    Inc\Init::register_services();
+}
 

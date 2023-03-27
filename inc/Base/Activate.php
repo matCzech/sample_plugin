@@ -4,7 +4,9 @@
     @package DelvoyPlugin
 */  
 
-class DelvoyPluginActivate{
+namespace Inc\Base;
+
+class Activate{
 
     public static function activate(){
         echo 'test';
