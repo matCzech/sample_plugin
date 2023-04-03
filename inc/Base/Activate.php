@@ -1,18 +1,12 @@
 <?php
-
-/*
-    @package DelvoyPlugin
-*/  
-
+/**
+ * @package  AlecadddPlugin
+ */
 namespace Inc\Base;
 
-class Activate{
-
-    public static function activate(){
-        echo 'test';
-        //$this -> custom_post_type();
-        flush_rewrite_rules();
-
-    }
-
+class Activate
+{
+	public static function activate() {
+		flush_rewrite_rules();
+	}
 }
