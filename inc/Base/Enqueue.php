@@ -1,6 +1,6 @@
 <?php 
 /**
- * @package  AlecadddPlugin
+ * @package  DeLvoyPlugin
  */
 namespace Inc\Base;
 
