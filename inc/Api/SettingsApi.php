@@ -14,9 +14,13 @@ class SettingsApi
 
 	public function register()
 	{
-		if ( ! empty($this->admin_pages) ) {
+		if ( !empty($this->admin_pages) ) {
 			add_action( 'admin_menu', array( $this, 'addAdminMenu' ) );
 		}
+
+		if(!empty($this->settings)){
+			add_action('admin_init', [$this, 'registerCustomFields']);
+		} 
 	}
 
 	public function addPages( array $pages )
@@ -93,7 +97,7 @@ class SettingsApi
 	{
 		//register setting
 		foreach ( $this->settings as $setting ) {
-			register_setting( $setting['option_group'], $setting['$option_name'], (isset($setting['callback']) ? $setting['callback'] : '' ) );
+			register_setting( $setting['option_group'], $setting['option_name'], (isset($setting['callback']) ? $setting['callback'] : '' ) );
 		}
 
 		//add settings action

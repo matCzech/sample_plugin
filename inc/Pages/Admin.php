@@ -28,6 +28,10 @@ class Admin extends BaseController
 
 		$this->setPages();
 		$this->setSubPages();
+		$this->setSettings();
+		$this->setSections();
+		$this->setFields();
+		
 
 		$this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages( $this->subpages )->register();
 	}
@@ -73,5 +77,51 @@ class Admin extends BaseController
 				'callback' => array($this->callbacks, 'customWidgetsDashboard')
 			)
 		);
+	}
+
+	public function setSettings()
+	{
+		$args = [
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'text_example',
+				'callback' => [$this->callbacks, 'delvoyOptionsGroup']
+			]
+		];
+
+		$this->settings->setSettings($args);
+	}
+
+	public function setSections()
+	{
+		$args = [
+			[
+				'id' => 'delvoy_admin_index',
+				'title' => 'Settings',
+				'callback' => [$this->callbacks, 'delvoyAdminSection'],
+				'page' => 'delvoy_plugin'
+			]
+		];
+
+		$this->settings->setSections($args);
+	}
+
+	public function setFields()
+	{
+		$args = [
+			[
+				'id' => 'text_example',
+				'title' => 'Text example',
+				'callback' => [$this->callbacks, 'delvoyTextExample'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'text_example',
+					'class' => 'example-class'
+				]
+			]
+		];
+
+		$this->settings->setFields($args);
 	}
 }
