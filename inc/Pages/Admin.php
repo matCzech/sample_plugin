@@ -86,6 +86,11 @@ class Admin extends BaseController
 				'option_group' => 'delvoy_options_group',
 				'option_name' => 'text_example',
 				'callback' => [$this->callbacks, 'delvoyOptionsGroup']
+			],
+			//1 of 3 steps adding new custom field in the same group
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'another_example'
 			]
 		];
 
@@ -117,6 +122,18 @@ class Admin extends BaseController
 				'section' => 'delvoy_admin_index',
 				'args' => [
 					'label_for' => 'text_example',
+					'class' => 'example-class'
+				]
+			],
+			//2 of 3 steps adding new custom field in the same group
+			[
+				'id' => 'another_example',
+				'title' => 'Another example',
+				'callback' => [$this->callbacks, 'delvoyAnotherExample'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'another_example',
 					'class' => 'example-class'
 				]
 			]

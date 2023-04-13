@@ -34,6 +34,12 @@ class AdminCallbacks extends BaseController
 
     public function delvoyTextExample(){
         $value = esc_attr(get_option('text_example'));
-        echo '<input type="text" class="regular-text" name="text-example" value="'.$value.'" placeholder="Place text">';
+        echo '<input type="text" class="regular-text" name="text_example" value="'.$value.'" placeholder="Place text">';
+    }
+
+    //3 of 3 steps adding new custom field in the same group
+    public function delvoyAnotherExample(){
+        $value = esc_attr(get_option('another_example'));
+        echo '<input type="text" class="regular-text" name="another_example" value="'.$value.'" placeholder="Place text">';
     }
 }
