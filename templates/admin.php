@@ -18,7 +18,7 @@
         <div id="tab-1" class="tab-pane active">
             <form method="post" action="options.php">
                 <?php  
-                    settings_fields('delvoy_options_group');
+                    settings_fields('delvoy_plugin_settings');
                     do_settings_sections('delvoy_plugin');
                     submit_button();
                 ?> 

@@ -24,14 +24,6 @@ class AdminCallbacks extends BaseController
         require_once($this->plugin_path . '/templates/custom-widgets.php');
     }
 
-    public function delvoyOptionsGroup($input){
-        return $input;
-    }
-
-    public function delvoyAdminSection(){
-        echo 'show section text';
-    }
-
     public function delvoyTextExample(){
         $value = esc_attr(get_option('text_example'));
         echo '<input type="text" class="regular-text" name="text_example" value="'.$value.'" placeholder="Place text">';

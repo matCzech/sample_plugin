@@ -7,6 +7,7 @@ namespace Inc\Pages;
 use \Inc\Base\BaseController;
 use \Inc\Api\SettingsApi;
 use \Inc\Api\Callbacks\AdminCallbacks;
+use \Inc\Api\Callbacks\ManagerCallbacks;
 
 /**
 * 
@@ -14,17 +15,17 @@ use \Inc\Api\Callbacks\AdminCallbacks;
 class Admin extends BaseController
 {
 	public $settings;
-
 	public $callbacks;
+	public $callbacks_mngr;
 
 	public $pages = array();
-
 	public $subpages = array();
 
 	public function register() 
 	{
 		$this->settings = new SettingsApi();
 		$this->callbacks = new AdminCallbacks();
+		$this->callbacks_mngr = new ManagerCallbacks();
 
 		$this->setPages();
 		$this->setSubPages();
@@ -83,14 +84,50 @@ class Admin extends BaseController
 	{
 		$args = [
 			[
-				'option_group' => 'delvoy_options_group',
-				'option_name' => 'text_example',
-				'callback' => [$this->callbacks, 'delvoyOptionsGroup']
+				'option_group' => 'delvoy_plugin_settings',
+				'option_name' => 'cpt_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
 			],
 			//1 of 3 steps adding new custom field in the same group
 			[
 				'option_group' => 'delvoy_options_group',
-				'option_name' => 'another_example'
+				'option_name' => 'taxonomy_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'media_widget',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'gallery_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'testimonial_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'templates_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'login_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'membership_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
+			],
+			[
+				'option_group' => 'delvoy_options_group',
+				'option_name' => 'chat_manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxSanitize']
 			]
 		];
 
@@ -102,8 +139,8 @@ class Admin extends BaseController
 		$args = [
 			[
 				'id' => 'delvoy_admin_index',
-				'title' => 'Settings',
-				'callback' => [$this->callbacks, 'delvoyAdminSection'],
+				'title' => 'Settings manager',
+				'callback' => [$this->callbacks_mngr, 'adminSectionManager'],
 				'page' => 'delvoy_plugin'
 			]
 		];
@@ -115,26 +152,103 @@ class Admin extends BaseController
 	{
 		$args = [
 			[
-				'id' => 'text_example',
-				'title' => 'Text example',
-				'callback' => [$this->callbacks, 'delvoyTextExample'],
+				'id' => 'cpt_manager',
+				'title' => 'Custom post type manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
 				'page' => 'delvoy_plugin',
 				'section' => 'delvoy_admin_index',
 				'args' => [
-					'label_for' => 'text_example',
-					'class' => 'example-class'
+					'label_for' => 'cpt_manager',
+					'class' => 'ui-toggle'
 				]
 			],
 			//2 of 3 steps adding new custom field in the same group
 			[
-				'id' => 'another_example',
-				'title' => 'Another example',
-				'callback' => [$this->callbacks, 'delvoyAnotherExample'],
+				'id' => 'taxonomy_manager',
+				'title' => 'Taxonomy manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
 				'page' => 'delvoy_plugin',
 				'section' => 'delvoy_admin_index',
 				'args' => [
-					'label_for' => 'another_example',
-					'class' => 'example-class'
+					'label_for' => 'taxonomy_manager',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'media_widget',
+				'title' => 'Media widget',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'media_widget',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'gallery_manager',
+				'title' => 'Gallery manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'gallery_manager',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'testimonial_manager',
+				'title' => 'Testimonial manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'testimonial_manager',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'templates_manager',
+				'title' => 'Templates manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'templates_manager',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'login_manager',
+				'title' => 'Login manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'login_manager',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'membership_manager',
+				'title' => 'Membership manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'membership_manager',
+					'class' => 'ui-toggle'
+				]
+			],
+			[
+				'id' => 'chat_manager',
+				'title' => 'Chat manager',
+				'callback' => [$this->callbacks_mngr, 'checkboxField'],
+				'page' => 'delvoy_plugin',
+				'section' => 'delvoy_admin_index',
+				'args' => [
+					'label_for' => 'chat_manager',
+					'class' => 'ui-toggle'
 				]
 			]
 		];
